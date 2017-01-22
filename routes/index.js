@@ -3,8 +3,6 @@ var router = express.Router();
 var responseTime = require('node-statsd');
 var request = require('request');
 
-const co = require('co');
-const generate = require('node-chartist');
 
 var xml2js = require('xml2js');
 
@@ -21,7 +19,6 @@ var parser = new xml2js.Parser();
 var urlObj;
 var urlArr;
 var respTime;
-// var sitemap;
 var urlArrTest = ['http://fex.net', 'http://example.com', 'http://wikipedia.org'];
 
 var data = {
@@ -57,6 +54,7 @@ var data2 = [
     // return data.output2;
  }
 
+// to get response time each URL
 function getTime() {
     // var respTime = [];
     data.ms = [];
@@ -75,6 +73,8 @@ function getTime() {
     });
 }
 
+
+//to get sitemap.xml from user URL
 function generatorSitemap(url_time) {
 
     var generator = new SitemapGenerator(url_time);
@@ -84,15 +84,11 @@ function generatorSitemap(url_time) {
         getTime(parseUrl(sitemap));
 
         // var jsonStr = JSON.stringify(str);
-
-
         // console.log(sitemap); // => prints xml sitemap
         // return sitemap;
     });
     // start the crawler
     generator.start();
-
-
 }
 
 // function getCallBackFunc(options, callback) {
@@ -111,7 +107,6 @@ router.get('/', function(req, res, next) {
 router.post('/response-time', function(req, res, next) {
     var url_time = req.body.url;
 
-
     // generator.start();
     generatorSitemap(url_time);
 
@@ -121,13 +116,17 @@ router.post('/response-time', function(req, res, next) {
 
 });
 
+
+//test result route button
 router.get('/test-result', function (req, res, next) {
    res.render('index', data);
 });
 
+
+//to JsonData
 router.get('/get-data', function (req, res, next) {
 
-    //to JsonData
+
     var objData = [];
 
     for (var i = 0; i < data.url.length; i++) {
@@ -137,13 +136,12 @@ router.get('/get-data', function (req, res, next) {
         var ms = data.ms[i];
         objData.push({url, ms});
 
-
     }
-
 
     res.json(objData);
     // res.render('index', data);
 });
+
 
 router.get('/barchart', function(req, res, next) {
     res.render('index');

@@ -5,9 +5,6 @@ var router = express.Router();
 var responseTime = require('node-statsd');
 var request = require('request');
 
-var co = require('co');
-var generate = require('node-chartist');
-
 var xml2js = require('xml2js');
 
 var StatsD = require('node-statsd');
@@ -19,7 +16,6 @@ var parser = new xml2js.Parser();
 var urlObj;
 var urlArr;
 var respTime;
-// var sitemap;
 var urlArrTest = ['http://fex.net', 'http://example.com', 'http://wikipedia.org'];
 
 var data = {
@@ -52,6 +48,7 @@ function parseUrl(sMapParam) {
     // return data.output2;
 }
 
+// to get response time each URL
 function getTime() {
     // var respTime = [];
     data.ms = [];
@@ -70,6 +67,7 @@ function getTime() {
     });
 }
 
+//to get sitemap.xml from user URL
 function generatorSitemap(url_time) {
 
     var generator = new SitemapGenerator(url_time);
@@ -79,7 +77,6 @@ function generatorSitemap(url_time) {
         getTime(parseUrl(sitemap));
 
         // var jsonStr = JSON.stringify(str);
-
         // console.log(sitemap); // => prints xml sitemap
         // return sitemap;
     });
@@ -108,13 +105,14 @@ router.post('/response-time', function (req, res, next) {
     res.render('index');
 });
 
+//test result route button
 router.get('/test-result', function (req, res, next) {
     res.render('index', data);
 });
 
+//to JsonData
 router.get('/get-data', function (req, res, next) {
 
-    //to JsonData
     var objData = [];
 
     for (var i = 0; i < data.url.length; i++) {
