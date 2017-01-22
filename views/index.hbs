@@ -1,0 +1,98 @@
+<p> Enter your URL: </p>
+<form action="/response-time" method="POST">
+    <input type="text" name="url" id="url">
+    <button type="submit">Send</button>
+    <a class="button" href="/test-result">Test Result</a>
+
+</form>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>(src='https://www.google.com/jsapi')</script>
+
+
+
+
+    <script type="text/javascript">
+
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages':['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+
+
+    function drawChart() {
+//        google.charts.load('current', {packages: ['corechart', 'bar']});
+//        google.charts.setOnLoadCallback(drawAxisTickColors);
+
+        $.get('/get-data', function (response) {
+            console.dir("response" + response);
+
+            var chartData = [];
+            for (var idx = 0; idx < response.length; ++idx) {
+
+                    var item = response[idx];
+
+                    chartData.push([item.url, item.ms]);
+
+            }
+
+            console.log(chartData);
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'URL');
+            data.addColumn('number', 'ms');
+
+            data.addRows(chartData);
+
+            var options = {
+                title: 'Response Time ',
+                bars: 'horizontal', // Required for Material Bar Charts.
+//                series: {
+//                    0: {axis: 'population'},
+//                    1: {axis: 'income'}
+//                },
+//                axes: {
+//                    x: {
+//                        population: {label: 'population'},
+//                        income: {side: 'top', label: 'income'}
+//                    }
+//                }
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+
+
+        }, 'json');
+    }
+
+    </script>
+
+<div id="chart_div"></div>
+
+
+<table class="u-full-width">
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>ms</th> 
+        </tr>
+
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            {{#each url}}
+                <p> {{this}}</p>
+            {{/each}}
+        </td>
+        <td>
+            {{#each ms}}
+                <p> {{this}} </p>
+            {{/each}}
+        </td>
+    </tr>
+    </tbody>
+</table>
