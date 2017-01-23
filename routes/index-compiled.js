@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var responseTime = require('node-statsd');
+
 var request = require('request');
 
 var xml2js = require('xml2js');

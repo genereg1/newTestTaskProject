@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var hbs = require('express-handlebars');
 
 var responseTime = require('response-time');
-var stats = require('node-statsd');
+
 
 var index = require('./routes/index');
 var users = require('./routes/users');
