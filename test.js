@@ -1,16 +1,17 @@
-var labels = ['http://fex.net', 'http://fex2.net', 'http://fex3.net'];
-var data = [44, 44, 50];
+var SitemapGenerator = require('sitemap-generator');
 
-var obj = {};
-for (var i = 0; i < labels.length; i++) {
+// create generator
+var generator = new SitemapGenerator('http://fex.net');
 
-    obj[ labels[i] ] = data[i];
+// register event listeners
+generator.on('done', function (sitemap) {
+    // console.log(sitemap); // => prints xml sitemap
+});
 
+generator.on('fetch', function (status, url) {
+    console.log(url);
+    
+});
 
-}
-
-
-var asJSON = JSON.stringify(obj);
-
-
-console.log(obj);
+// start the crawler
+generator.start();

@@ -1,16 +1,12 @@
 <p> Enter your URL: </p>
 <form action="/response-time" method="POST">
     <input type="text" name="url" id="url">
-    <button type="submit">Send</button>
-    <a class="button" href="/test-result">Test Result</a>
+    <button type="submit">Send and wait</button>
+    <a class="button" id="btnTestresult" href="/test-result">Test Result</a>
 
 </form>
-
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>(src='https://www.google.com/jsapi')</script>
-
-
-
 
     <script type="text/javascript">
 
@@ -20,24 +16,17 @@
     // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(drawChart);
 
-
-
     function drawChart() {
-//        google.charts.load('current', {packages: ['corechart', 'bar']});
-//        google.charts.setOnLoadCallback(drawAxisTickColors);
-
         $.get('/get-data', function (response) {
             console.dir("response" + response);
 
             var chartData = [];
             for (var idx = 0; idx < response.length; ++idx) {
 
-                    var item = response[idx];
+                var item = response[idx];
 
-                    chartData.push([item.url, item.ms]);
-
+                chartData.push([item.url, item.ms]);
             }
-
             console.log(chartData);
 
             var data = new google.visualization.DataTable();
@@ -71,7 +60,6 @@
     </script>
 
 <div id="chart_div"></div>
-
 
 <table class="u-full-width">
     <thead>

@@ -2,11 +2,8 @@
 
 var express = require('express');
 var router = express.Router();
-
 var request = require('request');
-
 var xml2js = require('xml2js');
-
 var SitemapGenerator = require('sitemap-generator');
 
 var parser = new xml2js.Parser();
@@ -31,19 +28,15 @@ function parseUrl(sMapParam) {
     data.url = [];
 
     parser.parseString(sMapParam, function (err, urlObj) {
-
         for (key in urlObj) {
-
             var prop = urlObj[key].url;
-
             for (key2 in prop) {
-
                 var testArr = prop[key2].loc.toString();
                 data.url.push(testArr);
+                // console.log(data.url);
             }
         }
     });
-    // return data.output2;
 }
 
 // to get response time each URL
@@ -70,21 +63,18 @@ function generatorSitemap(url_time) {
 
     var generator = new SitemapGenerator(url_time);
 
+    generator.on('fetch', function (status, url) {
+        console.log(url);
+    });
+
     generator.on('done', function (sitemap) {
         // parseUrl(sitemap);
         getTime(parseUrl(sitemap));
-
-        // var jsonStr = JSON.stringify(str);
-        // console.log(sitemap); // => prints xml sitemap
-        // return sitemap;
     });
+
     // start the crawler
     generator.start();
 }
-
-// function getCallBackFunc(options, callback) {
-//     callback(options);
-// }
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -95,11 +85,7 @@ router.get('/', function (req, res, next) {
 router.post('/response-time', function (req, res, next) {
     var url_time = req.body.url;
 
-    // generator.start();
     generatorSitemap(url_time);
-
-    // generatorSitemap(url_time);
-
     res.render('index');
 });
 
@@ -111,22 +97,20 @@ router.get('/test-result', function (req, res, next) {
 //to JsonData
 router.get('/get-data', function (req, res, next) {
 
-    var objData = [];
+    try {
+        var objData = [];
 
-    for (var i = 0; i < data.url.length; i++) {
-
-        // obj[ labels[i] ] = data[i];
-        var url = data.url[i];
-        var ms = data.ms[i];
-        objData.push({ url: url, ms: ms });
+        for (var i = 0; i < data.url.length; i++) {
+            // obj[ labels[i] ] = data[i];
+            var url = data.url[i];
+            var ms = data.ms[i];
+            objData.push({ url: url, ms: ms });
+        }
+    } catch (err) {
+        console.log("Enter your URL on /localhost:8000/");
     }
 
     res.json(objData);
-    // res.render('index', data);
-});
-
-router.get('/barchart', function (req, res, next) {
-    res.render('index');
 });
 
 module.exports = router;
