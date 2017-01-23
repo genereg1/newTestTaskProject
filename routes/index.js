@@ -6,7 +6,7 @@ var request = require('request');
 
 var xml2js = require('xml2js');
 
-var StatsD = require('node-statsd');
+
 
 
 var SitemapGenerator = require('sitemap-generator');
