@@ -3,7 +3,7 @@
 var SitemapGenerator = require('sitemap-generator');
 
 // create generator
-var generator = new SitemapGenerator('http://fex.net');
+var generator = new SitemapGenerator('http://expressjs.com/');
 
 // register event listeners
 generator.on('done', function (sitemap) {

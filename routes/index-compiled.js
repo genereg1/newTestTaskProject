@@ -52,8 +52,7 @@ function getTime() {
             var tesTms = response.elapsedTime;
 
             data.ms.push(tesTms);
-
-            // console.log('Request time in ms', respTime);
+            // console.log('Request time in ms', response.elapsedTime);
         });
     });
 }
@@ -68,7 +67,7 @@ function generatorSitemap(url_time) {
     });
 
     generator.on('done', function (sitemap) {
-        // parseUrl(sitemap);
+        console.log("DONE!\nPlease press button TestResult for out of the test data...");
         getTime(parseUrl(sitemap));
     });
 

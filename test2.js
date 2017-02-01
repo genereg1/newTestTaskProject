@@ -1,19 +1,17 @@
-var labels = ['http://fex.net', 'http://fex2.net', 'http://fex3.net'];
-var data = [44, 44, 50];
+var request = require('request');
 
-var obj = [];
-for (var i = 0; i < labels.length; i++) {
+var data = {
+    url : ['http://fex.net/', 'http://fex.net/']
+};
 
-    // obj[ labels[i] ] = data[i];
-    var url = labels[i];
-    var ms = data[i];
-    obj.push({url, ms});
+var start = new Date();
+data.url.forEach(function (item) {
+    
 
+request.get(item, function(err, response) {
+    // NOT GOOD
+    console.log('Request time plus 5 seconds', new Date() - start);
 
-}
+});
+});
 
-
-var asJSON = JSON.stringify(obj);
-
-
-console.log(obj);
